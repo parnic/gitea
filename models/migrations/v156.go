@@ -7,7 +7,6 @@ package migrations
 import (
 	"fmt"
 
-	"code.gitea.io/gitea/models"
 	"code.gitea.io/gitea/modules/timeutil"
 
 	"xorm.io/xorm"
@@ -50,7 +49,7 @@ func addPullRequestDefaultMergeStyle(x *xorm.Engine) error {
 		if unit.Config == nil {
 			unit.Config = make(map[string]interface{})
 		}
-		defaultMergeStyle := models.MergeStyleMerge
+		defaultMergeStyle := "merge"
 
 		if _, ok := unit.Config["DefaultMergeStyle"]; !ok {
 			unit.Config["DefaultMergeStyle"] = defaultMergeStyle
