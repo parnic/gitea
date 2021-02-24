@@ -336,12 +336,12 @@
 							</p>
 							<div class="ui dropdown selection" tabindex="0">
 								<select name="pulls_default_merge_style">
-									<option value="merge" {{if or (not $pullRequestEnabled) (eq $prUnit.PullRequestConfig.DefaultMergeStyle "merge")}}>{{.i18n.Tr "repo.pulls.merge_pull_request"}}</option>
-									<option value="rebase" {{if or (not $pullRequestEnabled) (eq $prUnit.PullRequestConfig.DefaultMergeStyle "rebase")}}>{{.i18n.Tr "repo.pulls.rebase_merge_pull_request"}}</option>
-									<option value="rebase-merge" {{if or (not $pullRequestEnabled) (eq $prUnit.PullRequestConfig.DefaultMergeStyle "rebase-merge")}}>{{.i18n.Tr "repo.pulls.rebase_merge_commit_pull_request"}}</option>
-									<option value="squash" {{if or (not $pullRequestEnabled) (eq $prUnit.PullRequestConfig.DefaultMergeStyle "squash")}}>{{.i18n.Tr "repo.pulls.squash_merge_pull_request"}}</option>
+									<option value="merge" {{if or (not $pullRequestEnabled) (eq $prUnit.PullRequestsConfig.DefaultMergeStyle "merge")}}selected{{end}}>{{.i18n.Tr "repo.pulls.merge_pull_request"}}</option>
+									<option value="rebase" {{if or (not $pullRequestEnabled) (eq $prUnit.PullRequestsConfig.DefaultMergeStyle "rebase")}}selected{{end}}>{{.i18n.Tr "repo.pulls.rebase_merge_pull_request"}}</option>
+									<option value="rebase-merge" {{if or (not $pullRequestEnabled) (eq $prUnit.PullRequestsConfig.DefaultMergeStyle "rebase-merge")}}selected{{end}}>{{.i18n.Tr "repo.pulls.rebase_merge_commit_pull_request"}}</option>
+									<option value="squash" {{if or (not $pullRequestEnabled) (eq $prUnit.PullRequestsConfig.DefaultMergeStyle "squash")}}selected{{end}}>{{.i18n.Tr "repo.pulls.squash_merge_pull_request"}}</option>
 								</select><i class="dropdown icon"></i>
-								<div class="default text">{{$prUnit.PullRequestConfig.DefaultMergeStyle}}</div>
+								<div class="default text">{{$prUnit.PullRequestsConfig.DefaultMergeStyle}}</div>
 								<div class="menu transition hidden" tabindex="-1" style="display: block !important;">
 									<div class="item" data-value="merge">{{.i18n.Tr "repo.pulls.merge_pull_request"}}</div>
 									<div class="item" data-value="rebase">{{.i18n.Tr "repo.pulls.rebase_merge_pull_request"}}</div>
