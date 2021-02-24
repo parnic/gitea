@@ -391,6 +391,7 @@ func (repo *Repository) innerAPIFormat(e Engine, mode AccessMode, isParent bool)
 	allowRebase := false
 	allowRebaseMerge := false
 	allowSquash := false
+	defaultMergeStyle := MergeStyleMerge
 	if unit, err := repo.getUnit(e, UnitTypePullRequests); err == nil {
 		config := unit.PullRequestsConfig()
 		hasPullRequests = true
@@ -399,6 +400,7 @@ func (repo *Repository) innerAPIFormat(e Engine, mode AccessMode, isParent bool)
 		allowRebase = config.AllowRebase
 		allowRebaseMerge = config.AllowRebaseMerge
 		allowSquash = config.AllowSquash
+		defaultMergeStyle = config.GetDefaultMergeStyle()
 	}
 	hasProjects := false
 	if _, err := repo.getUnit(e, UnitTypeProjects); err == nil {
@@ -450,6 +452,7 @@ func (repo *Repository) innerAPIFormat(e Engine, mode AccessMode, isParent bool)
 		AllowRebase:               allowRebase,
 		AllowRebaseMerge:          allowRebaseMerge,
 		AllowSquash:               allowSquash,
+		DefaultMergeStyle:         string(defaultMergeStyle),
 		AvatarURL:                 repo.avatarLink(e),
 		Internal:                  !repo.IsPrivate && repo.Owner.Visibility == api.VisibleTypePrivate,
 	}
@@ -1180,7 +1183,7 @@ func CreateRepository(ctx DBContext, doer, u *User, repo *Repository, overwriteO
 			units = append(units, RepoUnit{
 				RepoID: repo.ID,
 				Type:   tp,
-				Config: &PullRequestsConfig{AllowMerge: true, AllowRebase: true, AllowRebaseMerge: true, AllowSquash: true},
+				Config: &PullRequestsConfig{AllowMerge: true, AllowRebase: true, AllowRebaseMerge: true, AllowSquash: true, DefaultMergeStyle: MergeStyleMerge},
 			})
 		} else {
 			units = append(units, RepoUnit{
