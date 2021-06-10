@@ -79,12 +79,12 @@ type Claims struct {
 
 // ObjectLink builds a URL linking to the object.
 func (v *RequestVars) ObjectLink() string {
-	return setting.AppURL + path.Join(v.User, v.Repo+".git", "info/lfs/objects", v.Oid)
+	return setting.GetLFSRootURL() + path.Join(v.User, v.Repo+".git", "info/lfs/objects", v.Oid)
 }
 
 // VerifyLink builds a URL for verifying the object.
 func (v *RequestVars) VerifyLink() string {
-	return setting.AppURL + path.Join(v.User, v.Repo+".git", "info/lfs/verify")
+	return setting.GetLFSRootURL() + path.Join(v.User, v.Repo+".git", "info/lfs/verify")
 }
 
 // link provides a structure used to build a hypermedia representation of an HTTP link.

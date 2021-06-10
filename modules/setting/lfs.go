@@ -8,6 +8,7 @@ import (
 	"encoding/base64"
 	"os"
 	"path/filepath"
+	"net/url"
 	"time"
 
 	"code.gitea.io/gitea/modules/generate"
@@ -26,6 +27,7 @@ var LFS = struct {
 	HTTPAuthExpiry  time.Duration `ini:"LFS_HTTP_AUTH_EXPIRY"`
 	MaxFileSize     int64         `ini:"LFS_MAX_FILE_SIZE"`
 	LocksPagingNum  int           `ini:"LFS_LOCKS_PAGING_NUM"`
+	RootURL         string        `ini:"LFS_ROOT_URL"`
 
 	Storage
 }{}
@@ -86,6 +88,14 @@ func newLFSService() {
 				return
 			}
 		}
+
+		rootURL, parseErr := url.Parse(GetLFSRootURL())
+		if parseErr != nil {
+			log.Fatal("Failed to parse LFS root URL `%s`: %w", GetLFSRootURL(), parseErr)
+		} else if len(LFS.RootURL) > 0 {
+			rootURL.Path = "/"
+			LFS.RootURL = rootURL.String()
+		}
 	}
 }
 
@@ -108,4 +118,13 @@ func CheckLFSVersion() {
 				"-c", "filter.lfs.smudge=", "-c", "filter.lfs.clean=")
 		}
 	}
+}
+
+// GetLFSRootURL will return the root URL to be used for all LFS object links
+func GetLFSRootURL() string {
+	if len(LFS.RootURL) > 0 {
+		return LFS.RootURL
+	}
+
+	return AppURL
 }
